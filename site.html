@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Somatório</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    input, button { margin: 5px; padding: 5px; }
+  </style>
+</head>
+<body>
+  <h1>Calculadora de Somatório</h1>
+  <p>Digite os números separados por vírgula:</p>
+  <input type="text" id="entrada" placeholder="Ex: 1,2,3,4,5">
+  <button onclick="calcular()">Calcular</button>
+  <h2 id="resultado"></h2>
+
+  <script>
+    function somatorio(numeros) {
+      let soma = 0;
+      for (let i = 0; i < numeros.length; i++) {
+        soma += numeros[i];
+      }
+      return soma;
+    }
+
+    function calcular() {
+      const entrada = document.getElementById("entrada").value;
+      const numeros = entrada.split(",").map(Number);
+      const resultado = somatorio(numeros);
+      document.getElementById("resultado").innerText = "Somatório: " + resultado;
+    }
+  </script>
+</body>
+</html>
