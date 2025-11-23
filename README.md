@@ -42,9 +42,6 @@ Calcula o somatório entre dois números escolhidos pelo usuário (ex: de 5 até
 Nenhuma biblioteca ou framework externo foi utilizado.
 O projeto roda diretamente no navegador — basta abrir o arquivo index.html.
 
-📁 projeto-algoritmos-js
-│── index.html      # Página principal contendo todo o site
-└──README.md       # Este arquivo 
 
 🔧 Como Usar
 
@@ -52,8 +49,9 @@ Baixe ou clone este repositório:
 ```bash
 git clone https://github.com/seu-usuario/seu-repositorio.git
 ```
+```bash
 Abra o arquivo index.html no seu navegador.
-
+```
 🤝 Contribuição Sinta-se à vontade para contribuir com melhorias, ideias ou correções. Pull requests são sempre bem-vindos! 🚀
 
 📝 Licença Este projeto é livre para estudos e modificações. Você pode usar como base no seu portfólio.
