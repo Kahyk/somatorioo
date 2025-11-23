@@ -1,35 +1,1081 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <title>Somatório</title>
-  <style>
-    body { font-family: Arial, sans-serif; padding: 20px; }
-    input, button { margin: 5px; padding: 5px; }
-  </style>
-</head>
-<body>
-  <h1>Calculadora de Somatório</h1>
-  <p>Digite os números separados por vírgula:</p>
-  <input type="text" id="entrada" placeholder="Ex: 1,2,3,4,5">
-  <button onclick="calcular()">Calcular</button>
-  <h2 id="resultado"></h2>
+    <!DOCTYPE html>
+    <html lang="pt-BR">
+    <head>
+    <meta charset="UTF-8" />
+    <title>Testes de Algoritmos em JavaScript</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+        :root {
+        --bg: #0f172a;
+        --bg-card: #020617;
+        --bg-card-soft: #020617ee;
+        --accent: #38bdf8;
+        --accent-soft: rgba(56, 189, 248, 0.13);
+        --accent-strong: rgba(56, 189, 248, 0.25);
+        --text: #e5e7eb;
+        --muted: #9ca3af;
+        --border: #1f2937;
+        --error: #f97373;
+        --radius: 16px;
+        --shadow-soft: 0 18px 40px rgba(15, 23, 42, 0.85);
+        --shadow-card: 0 14px 30px rgba(15, 23, 42, 0.75);
+        }
 
-  <script>
-    function somatorio(numeros) {
-      let soma = 0;
-      for (let i = 0; i < numeros.length; i++) {
-        soma += numeros[i];
-      }
-      return soma;
-    }
+        * {
+        box-sizing: border-box;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        }
 
-    function calcular() {
-      const entrada = document.getElementById("entrada").value;
-      const numeros = entrada.split(",").map(Number);
-      const resultado = somatorio(numeros);
-      document.getElementById("resultado").innerText = "Somatório: " + resultado;
-    }
-  </script>
-</body>
-</html>
+        body {
+        margin: 0;
+        min-height: 100vh;
+        background: radial-gradient(circle at top, #1f2937 0, #020617 45%, #000 100%);
+        color: var(--text);
+        display: flex;
+        justify-content: center;
+        padding: 32px 16px;
+        }
+
+        .app {
+        width: 100%;
+        max-width: 1120px;
+        backdrop-filter: blur(26px);
+        background: linear-gradient(135deg, rgba(15,23,42,0.98), rgba(15,23,42,0.96), rgba(15,23,42,0.9));
+        border-radius: 24px;
+        border: 1px solid rgba(148, 163, 184, 0.22);
+        box-shadow: var(--shadow-soft);
+        padding: 24px 24px 28px;
+        }
+
+        header {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 20px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+        }
+
+        .title-block h1 {
+        margin: 0;
+        font-size: 1.6rem;
+        letter-spacing: 0.02em;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        }
+
+        .title-pill {
+        background: radial-gradient(circle at top left, #38bdf8, #0ea5e9);
+        color: #0b1220;
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        border-radius: 999px;
+        padding: 4px 10px;
+        letter-spacing: 0.12em;
+        font-weight: 700;
+        }
+
+        .title-block p {
+        margin: 4px 0 0;
+        color: var(--muted);
+        font-size: 0.9rem;
+        }
+
+        .chip-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        font-size: 0.7rem;
+        justify-content: flex-end;
+        }
+
+        .chip {
+        padding: 4px 10px;
+        border-radius: 999px;
+        border: 1px solid rgba(148, 163, 184, 0.3);
+        color: var(--muted);
+        background: radial-gradient(circle at top, rgba(148, 163, 184, 0.16), rgba(15,23,42,0.7));
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        }
+
+        .chip-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 999px;
+        background: #22c55e;
+        box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.24);
+        }
+
+        /* Layout principal */
+        .layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1.5fr) minmax(0, 1.1fr);
+        gap: 16px;
+        }
+
+        @media (max-width: 860px) {
+        .layout {
+            grid-template-columns: minmax(0, 1fr);
+        }
+        }
+
+        /* Navegação lateral de algoritmos */
+        .nav-panel {
+        border-radius: var(--radius);
+        background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.16), rgba(15,23,42,0.9));
+        padding: 14px 14px 16px;
+        border: 1px solid rgba(148, 163, 184, 0.35);
+        box-shadow: var(--shadow-card);
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        }
+
+        .nav-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        margin-bottom: 4px;
+        }
+
+        .nav-header h2 {
+        margin: 0;
+        font-size: 0.95rem;
+        }
+
+        .nav-header span {
+        font-size: 0.7rem;
+        color: var(--muted);
+        }
+
+        .nav-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: grid;
+        gap: 6px;
+        }
+
+        .nav-item-btn {
+        width: 100%;
+        text-align: left;
+        border: 1px solid rgba(148, 163, 184, 0.4);
+        background: linear-gradient(120deg, rgba(15,23,42,0.9), rgba(15,23,42,0.95));
+        color: var(--muted);
+        border-radius: 12px;
+        padding: 8px 10px;
+        font-size: 0.8rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        transition: all 0.18s ease-out;
+        }
+
+        .nav-item-btn span.label-main {
+        color: var(--text);
+        font-weight: 500;
+        font-size: 0.83rem;
+        }
+
+        .nav-item-btn span.label-sub {
+        font-size: 0.7rem;
+        opacity: 0.86;
+        }
+
+        .nav-item-btn:hover {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.4);
+        transform: translateY(-1px);
+        background: linear-gradient(120deg, rgba(8,47,73,0.95), rgba(15,23,42,0.98));
+        }
+
+        .nav-item-btn.active {
+        border-color: var(--accent);
+        background: radial-gradient(circle at top, var(--accent-soft), rgba(15,23,42,0.98));
+        color: var(--text);
+        box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.6), 0 18px 30px rgba(8,47,73,0.65);
+        }
+
+        .nav-pill {
+        font-size: 0.68rem;
+        padding: 3px 8px;
+        border-radius: 999px;
+        border: 1px solid rgba(148, 163, 184, 0.45);
+        background: radial-gradient(circle at top, rgba(15,23,42,0.9), rgba(15,23,42,0.85));
+        color: var(--muted);
+        }
+
+        /* Card do algoritmo */
+        .algo-card {
+        border-radius: var(--radius);
+        background: var(--bg-card-soft);
+        border: 1px solid rgba(30, 64, 175, 0.7);
+        box-shadow: var(--shadow-card);
+        padding: 18px 18px 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        position: relative;
+        overflow: hidden;
+        }
+
+        .algo-card::before {
+        content: "";
+        position: absolute;
+        inset: -40%;
+        background:
+            radial-gradient(circle at 0% 0%, rgba(56, 189, 248, 0.16), transparent 60%),
+            radial-gradient(circle at 100% 0%, rgba(56, 189, 248, 0.08), transparent 60%);
+        opacity: 0.85;
+        pointer-events: none;
+        }
+
+        .algo-card-inner {
+        position: relative;
+        z-index: 1;
+        }
+
+        .algo-header {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        align-items: flex-start;
+        }
+
+        .algo-header-left h2 {
+        margin: 0;
+        font-size: 1.1rem;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        }
+
+        .algo-badge {
+        font-size: 0.7rem;
+        padding: 3px 8px;
+        border-radius: 999px;
+        border: 1px solid rgba(56, 189, 248, 0.8);
+        background: radial-gradient(circle at top, var(--accent-soft), rgba(15,23,42,0.9));
+        color: var(--accent);
+        }
+
+        .algo-header-left p {
+        margin: 5px 0 0;
+        font-size: 0.85rem;
+        color: var(--muted);
+        }
+
+        .algo-header-right {
+        text-align: right;
+        font-size: 0.75rem;
+        color: var(--muted);
+        }
+
+        .algo-header-right .tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 8px;
+        border-radius: 999px;
+        border: 1px solid rgba(148, 163, 184, 0.4);
+        background: radial-gradient(circle at top, rgba(148, 163, 184, 0.12), rgba(15,23,42,0.9));
+        }
+
+        .algo-header-right .tag-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 999px;
+        background: var(--accent);
+        box-shadow: 0 0 0 4px var(--accent-soft);
+        }
+
+        /* Form / inputs */
+        .form-grid {
+        display: grid;
+        gap: 10px;
+        margin-top: 4px;
+        }
+
+        .field {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        font-size: 0.85rem;
+        }
+
+        label {
+        color: var(--muted);
+        font-size: 0.8rem;
+        }
+
+        input, textarea, select {
+        border-radius: 10px;
+        border: 1px solid rgba(148, 163, 184, 0.6);
+        padding: 8px 10px;
+        background: rgba(15, 23, 42, 0.96);
+        color: var(--text);
+        font-size: 0.9rem;
+        outline: none;
+        transition: all 0.16s ease-out;
+        }
+
+        input:focus, textarea:focus, select:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 1px var(--accent-soft);
+        }
+
+        textarea {
+        resize: vertical;
+        min-height: 70px;
+        max-height: 160px;
+        }
+
+        .btn-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 4px;
+        }
+
+        button.btn-primary {
+        border-radius: 999px;
+        background: linear-gradient(135deg, #0ea5e9, #22c55e);
+        border: none;
+        color: #0b1120;
+        padding: 7px 16px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: 0 12px 24px rgba(8, 47, 73, 0.8);
+        transition: all 0.16s ease-out;
+        }
+
+        button.btn-primary:hover {
+        transform: translateY(-1px) scale(1.01);
+        box-shadow: 0 16px 32px rgba(8, 47, 73, 0.95);
+        filter: brightness(1.05);
+        }
+
+        button.btn-secondary {
+        border-radius: 999px;
+        background: transparent;
+        border: 1px solid rgba(148, 163, 184, 0.6);
+        color: var(--muted);
+        padding: 7px 12px;
+        font-size: 0.8rem;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition: all 0.16s ease-out;
+        }
+
+        button.btn-secondary:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+        box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.4);
+        background: radial-gradient(circle at top, rgba(15,23,42,0.9), rgba(15,23,42,1));
+        }
+
+        .btn-icon {
+        font-size: 1.05rem;
+        }
+
+        /* Resultado */
+        .output {
+        margin-top: 10px;
+        border-radius: 12px;
+        background: radial-gradient(circle at top left, var(--accent-soft), rgba(15,23,42,0.97));
+        border: 1px solid rgba(56, 189, 248, 0.6);
+        padding: 10px 11px;
+        font-size: 0.85rem;
+        max-height: 200px;
+        overflow: auto;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        }
+
+        .output-title {
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: var(--muted);
+        margin-bottom: 3px;
+        }
+
+        .error {
+        color: var(--error);
+        }
+
+        .muted {
+        color: var(--muted);
+        }
+
+        footer {
+        margin-top: 18px;
+        font-size: 0.75rem;
+        color: var(--muted);
+        text-align: right;
+        border-top: 1px solid rgba(148, 163, 184, 0.22);
+        padding-top: 8px;
+        }
+    </style>
+    </head>
+    <body>
+    <div class="app">
+        <header>
+        <div class="title-block">
+            <h1>
+            <span class="title-pill">JS ALGORITHMS LAB</span>
+            Testes de Algoritmos – Projeto
+            </h1>
+            <p>Painel para testar seus algoritmos em JavaScript: contagem, Fibonacci, MDC, número primo, ordenação e somatório.</p>
+        </div>
+        <div class="chip-row">
+            <div class="chip">
+            <span class="chip-dot"></span>
+            <span>Ambiente de testes pronto</span>
+            </div>
+            <div class="chip">
+            <span>Vanilla JS</span>
+            </div>
+            <div class="chip">
+            <span>Responsivo</span>
+            </div>
+        </div>
+        </header>
+
+        <main class="layout">
+        <!-- Navegação de algoritmos -->
+        <aside class="nav-panel">
+            <div class="nav-header">
+            <h2>Algoritmos</h2>
+            <span>Selecione um para testar</span>
+            </div>
+            <ul class="nav-list">
+            <li>
+                <button class="nav-item-btn active" data-target="algo-contagem">
+                <div>
+                    <span class="label-main">Contagem</span><br>
+                    <span class="label-sub">Início, fim e passo</span>
+                </div>
+                <span class="nav-pill">Loop</span>
+                </button>
+            </li>
+            <li>
+                <button class="nav-item-btn" data-target="algo-fibonacci">
+                <div>
+                    <span class="label-main">Fibonacci</span><br>
+                    <span class="label-sub">Gera N termos</span>
+                </div>
+                <span class="nav-pill">Recorrência</span>
+                </button>
+            </li>
+            <li>
+                <button class="nav-item-btn" data-target="algo-mdc">
+                <div>
+                    <span class="label-main">MDC</span><br>
+                    <span class="label-sub">Máximo divisor comum</span>
+                </div>
+                <span class="nav-pill">Euclides</span>
+                </button>
+            </li>
+            <li>
+                <button class="nav-item-btn" data-target="algo-primo">
+                <div>
+                    <span class="label-main">Número Primo</span><br>
+                    <span class="label-sub">Verificação primalidade</span>
+                </div>
+                <span class="nav-pill">Divisores</span>
+                </button>
+            </li>
+            <li>
+                <button class="nav-item-btn" data-target="algo-ordenacao">
+                <div>
+                    <span class="label-main">Ordenar Números</span><br>
+                    <span class="label-sub">Lista crescente</span>
+                </div>
+                <span class="nav-pill">Sort</span>
+                </button>
+            </li>
+            <li>
+                <button class="nav-item-btn" data-target="algo-somatorio">
+                <div>
+                    <span class="label-main">Somatório</span><br>
+                    <span class="label-sub">1 até N</span>
+                </div>
+                <span class="nav-pill">Σ</span>
+                </button>
+            </li>
+            </ul>
+        </aside>
+
+        <!-- Card do algoritmo selecionado -->
+        <section class="algo-card">
+            <div class="algo-card-inner">
+            <!-- Contagem -->
+            <div class="algo-view" id="algo-contagem">
+                <div class="algo-header">
+                <div class="algo-header-left">
+                    <h2>
+                    Contagem
+                    <span class="algo-badge">Loop controlado</span>
+                    </h2>
+                    <p>Gera uma sequência numérica a partir de um valor inicial, indo até o valor final, utilizando um passo definido.</p>
+                </div>
+                <div class="algo-header-right">
+                    <div class="tag">
+                    <span class="tag-dot"></span>
+                    <span>Iterativo</span>
+                    </div>
+                    <div>for / while</div>
+                </div>
+                </div>
+
+                <div class="form-grid">
+                <div class="field">
+                    <label for="cont-inicio">Início</label>
+                    <input type="number" id="cont-inicio" value="1" />
+                </div>
+                <div class="field">
+                    <label for="cont-fim">Fim</label>
+                    <input type="number" id="cont-fim" value="10" />
+                </div>
+                <div class="field">
+                    <label for="cont-passo">Passo</label>
+                    <input type="number" id="cont-passo" value="1" />
+                </div>
+                </div>
+
+                <div class="btn-row">
+                <button class="btn-primary" id="btn-contagem">
+                    <span class="btn-icon">▶</span>
+                    Executar contagem
+                </button>
+                <button class="btn-secondary" data-clear="contagem">
+                    <span>Limpar</span>
+                </button>
+                </div>
+
+                <div class="output" id="out-contagem">
+                <div class="output-title">Resultado</div>
+                <div class="muted">Informe os valores e clique em executar.</div>
+                </div>
+            </div>
+
+            <!-- Fibonacci -->
+            <div class="algo-view" id="algo-fibonacci" style="display:none;">
+                <div class="algo-header">
+                <div class="algo-header-left">
+                    <h2>
+                    Fibonacci
+                    <span class="algo-badge">Sequência numérica</span>
+                    </h2>
+                    <p>Gera os N primeiros termos da sequência de Fibonacci: cada termo é a soma dos dois anteriores.</p>
+                </div>
+                <div class="algo-header-right">
+                    <div class="tag">
+                    <span class="tag-dot"></span>
+                    <span>Recorrência</span>
+                    </div>
+                    <div>Iterativo</div>
+                </div>
+                </div>
+
+                <div class="form-grid">
+                <div class="field">
+                    <label for="fib-n">Quantidade de termos (N)</label>
+                    <input type="number" id="fib-n" value="10" min="1" />
+                </div>
+                </div>
+
+                <div class="btn-row">
+                <button class="btn-primary" id="btn-fibonacci">
+                    <span class="btn-icon">▶</span>
+                    Gerar sequência
+                </button>
+                <button class="btn-secondary" data-clear="fibonacci">
+                    <span>Limpar</span>
+                </button>
+                </div>
+
+                <div class="output" id="out-fibonacci">
+                <div class="output-title">Resultado</div>
+                <div class="muted">Informe N e clique em gerar.</div>
+                </div>
+            </div>
+
+            <!-- MDC -->
+            <div class="algo-view" id="algo-mdc" style="display:none;">
+                <div class="algo-header">
+                <div class="algo-header-left">
+                    <h2>
+                    Máximo Divisor Comum (MDC)
+                    <span class="algo-badge">Algoritmo de Euclides</span>
+                    </h2>
+                    <p>Calcula o maior número inteiro que divide simultaneamente dois valores sem deixar resto.</p>
+                </div>
+                <div class="algo-header-right">
+                    <div class="tag">
+                    <span class="tag-dot"></span>
+                    <span>Divisão sucessiva</span>
+                    </div>
+                    <div>Otimizado</div>
+                </div>
+                </div>
+
+                <div class="form-grid">
+                <div class="field">
+                    <label for="mdc-a">Número A</label>
+                    <input type="number" id="mdc-a" value="54" />
+                </div>
+                <div class="field">
+                    <label for="mdc-b">Número B</label>
+                    <input type="number" id="mdc-b" value="24" />
+                </div>
+                </div>
+
+                <div class="btn-row">
+                <button class="btn-primary" id="btn-mdc">
+                    <span class="btn-icon">▶</span>
+                    Calcular MDC
+                </button>
+                <button class="btn-secondary" data-clear="mdc">
+                    <span>Limpar</span>
+                </button>
+                </div>
+
+                <div class="output" id="out-mdc">
+                <div class="output-title">Resultado</div>
+                <div class="muted">Informe dois inteiros e clique em calcular.</div>
+                </div>
+            </div>
+
+            <!-- Número primo -->
+            <div class="algo-view" id="algo-primo" style="display:none;">
+                <div class="algo-header">
+                <div class="algo-header-left">
+                    <h2>
+                    Verificação de Número Primo
+                    <span class="algo-badge">Primalidade</span>
+                    </h2>
+                    <p>Verifica se um inteiro maior que 1 possui apenas dois divisores: 1 e ele mesmo.</p>
+                </div>
+                <div class="algo-header-right">
+                    <div class="tag">
+                    <span class="tag-dot"></span>
+                    <span>Divisão testada</span>
+                    </div>
+                    <div>O(√n)</div>
+                </div>
+                </div>
+
+                <div class="form-grid">
+                <div class="field">
+                    <label for="primo-n">Número</label>
+                    <input type="number" id="primo-n" value="17" />
+                </div>
+                </div>
+
+                <div class="btn-row">
+                <button class="btn-primary" id="btn-primo">
+                    <span class="btn-icon">▶</span>
+                    Verificar
+                </button>
+                <button class="btn-secondary" data-clear="primo">
+                    <span>Limpar</span>
+                </button>
+                </div>
+
+                <div class="output" id="out-primo">
+                <div class="output-title">Resultado</div>
+                <div class="muted">Informe um número inteiro e clique em verificar.</div>
+                </div>
+            </div>
+
+            <!-- Ordenação -->
+            <div class="algo-view" id="algo-ordenacao" style="display:none;">
+                <div class="algo-header">
+                <div class="algo-header-left">
+                    <h2>
+                    Ordenar Números
+                    <span class="algo-badge">Ordenação crescente</span>
+                    </h2>
+                    <p>Lê uma lista de números separados por vírgula, converte para inteiros e retorna a lista ordenada em ordem crescente.</p>
+                </div>
+                <div class="algo-header-right">
+                    <div class="tag">
+                    <span class="tag-dot"></span>
+                    <span>Sort comparativo</span>
+                    </div>
+                    <div>O(n log n)</div>
+                </div>
+                </div>
+
+                <div class="form-grid">
+                <div class="field">
+                    <label for="ord-lista">Lista de números (separados por vírgula)</label>
+                    <textarea id="ord-lista" placeholder="Ex.: 10, 3, 8, 1, 4"></textarea>
+                </div>
+                </div>
+
+                <div class="btn-row">
+                <button class="btn-primary" id="btn-ordenacao">
+                    <span class="btn-icon">▶</span>
+                    Ordenar lista
+                </button>
+                <button class="btn-secondary" data-clear="ordenacao">
+                    <span>Limpar</span>
+                </button>
+                </div>
+
+                <div class="output" id="out-ordenacao">
+                <div class="output-title">Resultado</div>
+                <div class="muted">Digite a lista e clique em ordenar.</div>
+                </div>
+            </div>
+
+            <!-- Somatório -->
+            <div class="algo-view" id="algo-somatorio" style="display:none;">
+                <div class="algo-header">
+                <div class="algo-header-left">
+                    <h2>
+                    Somatório
+                    <span class="algo-badge">Σ 1 até N</span>
+                    </h2>
+                    <p>Calcula o somatório de 1 até N, mostrando o resultado e a forma expandida da soma.</p>
+                </div>
+                <div class="algo-header-right">
+                    <div class="tag">
+                    <span class="tag-dot"></span>
+                    <span>Fechada / iterativa</span>
+                    </div>
+                    <div>O(1)</div>
+                </div>
+                </div>
+
+                <div class="form-grid">
+                <div class="field">
+                    <label for="som-n">N (inteiro &gt;= 1)</label>
+                    <input type="number" id="som-n" value="10" min="1" />
+                </div>
+                </div>
+
+                <div class="btn-row">
+                <button class="btn-primary" id="btn-somatorio">
+                    <span class="btn-icon">▶</span>
+                    Calcular somatório
+                </button>
+                <button class="btn-secondary" data-clear="somatorio">
+                    <span>Limpar</span>
+                </button>
+                </div>
+
+                <div class="output" id="out-somatorio">
+                <div class="output-title">Resultado</div>
+                <div class="muted">Informe N e clique em calcular.</div>
+                </div>
+            </div>
+            </div>
+        </section>
+        </main>
+
+        <footer>
+        Ambiente de testes em JavaScript – você pode adaptar o código para usar exatamente os seus algoritmos.
+        </footer>
+    </div>
+
+    <script>
+        // ---------- Navegação entre algoritmos ----------
+        const navButtons = document.querySelectorAll(".nav-item-btn");
+        const algoViews = document.querySelectorAll(".algo-view");
+
+        navButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+            const targetId = btn.getAttribute("data-target");
+
+            navButtons.forEach((b) => b.classList.remove("active"));
+            btn.classList.add("active");
+
+            algoViews.forEach((view) => {
+            view.style.display = view.id === targetId ? "block" : "none";
+            });
+        });
+        });
+
+        // ---------- Algoritmos ----------
+
+        // Contagem
+        function executarContagem() {
+        const inicio = Number(document.getElementById("cont-inicio").value);
+        const fim = Number(document.getElementById("cont-fim").value);
+        let passo = Number(document.getElementById("cont-passo").value);
+        const out = document.getElementById("out-contagem");
+
+        if (isNaN(inicio) || isNaN(fim) || isNaN(passo) || passo === 0) {
+            out.innerHTML =
+            '<div class="output-title">Resultado</div>' +
+            '<span class="error">Erro: verifique se início, fim e passo são números válidos (passo ≠ 0).</span>';
+            return;
+        }
+
+        if (passo < 0) passo = Math.abs(passo);
+        let resultado = [];
+        if (inicio < fim) {
+            for (let i = inicio; i <= fim; i += passo) {
+            resultado.push(i);
+            }
+        } else {
+            for (let i = inicio; i >= fim; i -= passo) {
+            resultado.push(i);
+            }
+        }
+
+        out.innerHTML =
+            '<div class="output-title">Resultado</div>' +
+            resultado.join(" → ") +
+            " ⏹";
+        }
+
+        // Fibonacci
+        function gerarFibonacci() {
+        const n = Number(document.getElementById("fib-n").value);
+        const out = document.getElementById("out-fibonacci");
+
+        if (!Number.isInteger(n) || n <= 0) {
+            out.innerHTML =
+            '<div class="output-title">Resultado</div>' +
+            '<span class="error">Erro: informe um inteiro positivo para N.</span>';
+            return;
+        }
+
+        const seq = [];
+        let a = 0, b = 1;
+
+        if (n >= 1) seq.push(a);
+        if (n >= 2) seq.push(b);
+        for (let i = 3; i <= n; i++) {
+            const c = a + b;
+            seq.push(c);
+            a = b;
+            b = c;
+        }
+
+        out.innerHTML =
+            '<div class="output-title">Resultado</div>' +
+            "Fibonacci(" + n + " termos): " + seq.join(", ");
+        }
+
+        // MDC (Máximo Divisor Comum) - Euclides
+        function calcularMDC() {
+        let a = Number(document.getElementById("mdc-a").value);
+        let b = Number(document.getElementById("mdc-b").value);
+        const out = document.getElementById("out-mdc");
+
+        if (!Number.isInteger(a) || !Number.isInteger(b)) {
+            out.innerHTML =
+            '<div class="output-title">Resultado</div>' +
+            '<span class="error">Erro: informe apenas números inteiros.</span>';
+            return;
+        }
+
+        a = Math.abs(a);
+        b = Math.abs(b);
+
+        if (a === 0 && b === 0) {
+            out.innerHTML =
+            '<div class="output-title">Resultado</div>' +
+            '<span class="error">MDC indefinido para 0 e 0.</span>';
+            return;
+        }
+
+        const originalA = a;
+        const originalB = b;
+        while (b !== 0) {
+            const temp = b;
+            b = a % b;
+            a = temp;
+        }
+        const mdc = a;
+
+        out.innerHTML =
+            '<div class="output-title">Resultado</div>' +
+            "MDC(" + originalA + ", " + originalB + ") = <strong>" + mdc + "</strong>";
+        }
+
+        // Verificação de número primo
+        function verificarPrimo() {
+        const n = Number(document.getElementById("primo-n").value);
+        const out = document.getElementById("out-primo");
+
+        if (!Number.isInteger(n)) {
+            out.innerHTML =
+            '<div class="output-title">Resultado</div>' +
+            '<span class="error">Erro: informe um número inteiro.</span>';
+            return;
+        }
+
+        if (n <= 1) {
+            out.innerHTML =
+            '<div class="output-title">Resultado</div>' +
+            n + " não é primo (por definição, primos são inteiros maiores que 1).";
+            return;
+        }
+
+        let primo = true;
+        const ate = Math.floor(Math.sqrt(n));
+        for (let i = 2; i <= ate; i++) {
+            if (n % i === 0) {
+            primo = false;
+            break;
+            }
+        }
+
+        if (primo) {
+            out.innerHTML =
+            '<div class="output-title">Resultado</div>' +
+            n + " é um número primo.";
+        } else {
+            out.innerHTML =
+            '<div class="output-title">Resultado</div>' +
+            n + " <strong>não</strong> é primo.";
+        }
+        }
+
+        // Ordenação de números
+        function ordenarLista() {
+        const raw = document.getElementById("ord-lista").value;
+        const out = document.getElementById("out-ordenacao");
+
+        if (!raw.trim()) {
+            out.innerHTML =
+            '<div class="output-title">Resultado</div>' +
+            '<span class="error">Erro: informe ao menos um número.</span>';
+            return;
+        }
+
+        const partes = raw.split(",");
+        const numeros = [];
+
+        for (const parte of partes) {
+            const limpo = parte.trim();
+            if (limpo === "") continue;
+            const num = Number(limpo);
+            if (isNaN(num)) {
+            out.innerHTML =
+                '<div class="output-title">Resultado</div>' +
+                '<span class="error">Erro: "' + limpo + '" não é um número válido.</span>';
+            return;
+            }
+            numeros.push(num);
+        }
+
+        if (numeros.length === 0) {
+            out.innerHTML =
+            '<div class="output-title">Resultado</div>' +
+            '<span class="error">Erro: nenhum número válido encontrado.</span>';
+            return;
+        }
+
+        const original = [...numeros];
+        numeros.sort((a, b) => a - b);
+
+        out.innerHTML =
+            '<div class="output-title">Resultado</div>' +
+            "Original: " + original.join(", ") + "<br>" +
+            "Ordenado: <strong>" + numeros.join(", ") + "</strong>";
+        }
+
+        // Somatório 1..N
+        function calcularSomatorio() {
+        const n = Number(document.getElementById("som-n").value);
+        const out = document.getElementById("out-somatorio");
+
+        if (!Number.isInteger(n) || n < 1) {
+            out.innerHTML =
+            '<div class="output-title">Resultado</div>' +
+            '<span class="error">Erro: informe um inteiro N ≥ 1.</span>';
+            return;
+        }
+
+        const soma = (n * (n + 1)) / 2;
+        let expandida = "";
+        if (n <= 40) {
+            const termos = [];
+            for (let i = 1; i <= n; i++) {
+            termos.push(i);
+            }
+            expandida = termos.join(" + ");
+        } else {
+            expandida = "1 + 2 + ... + " + n;
+        }
+
+        out.innerHTML =
+            '<div class="output-title">Resultado</div>' +
+            "Σ (1 até " + n + ") = " + expandida + " = <strong>" + soma + "</strong>";
+        }
+
+        // ---------- Botões ----------
+        document.getElementById("btn-contagem").addEventListener("click", executarContagem);
+        document.getElementById("btn-fibonacci").addEventListener("click", gerarFibonacci);
+        document.getElementById("btn-mdc").addEventListener("click", calcularMDC);
+        document.getElementById("btn-primo").addEventListener("click", verificarPrimo);
+        document.getElementById("btn-ordenacao").addEventListener("click", ordenarLista);
+        document.getElementById("btn-somatorio").addEventListener("click", calcularSomatorio);
+
+        // ---------- Botões de limpar ----------
+        const clearButtons = document.querySelectorAll("button[data-clear]");
+        clearButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+            const tipo = btn.getAttribute("data-clear");
+            switch (tipo) {
+            case "contagem":
+                document.getElementById("cont-inicio").value = "";
+                document.getElementById("cont-fim").value = "";
+                document.getElementById("cont-passo").value = "";
+                document.getElementById("out-contagem").innerHTML =
+                '<div class="output-title">Resultado</div><div class="muted">Informe os valores e clique em executar.</div>';
+                break;
+            case "fibonacci":
+                document.getElementById("fib-n").value = "";
+                document.getElementById("out-fibonacci").innerHTML =
+                '<div class="output-title">Resultado</div><div class="muted">Informe N e clique em gerar.</div>';
+                break;
+            case "mdc":
+                document.getElementById("mdc-a").value = "";
+                document.getElementById("mdc-b").value = "";
+                document.getElementById("out-mdc").innerHTML =
+                '<div class="output-title">Resultado</div><div class="muted">Informe dois inteiros e clique em calcular.</div>';
+                break;
+            case "primo":
+                document.getElementById("primo-n").value = "";
+                document.getElementById("out-primo").innerHTML =
+                '<div class="output-title">Resultado</div><div class="muted">Informe um número inteiro e clique em verificar.</div>';
+                break;
+            case "ordenacao":
+                document.getElementById("ord-lista").value = "";
+                document.getElementById("out-ordenacao").innerHTML =
+                '<div class="output-title">Resultado</div><div class="muted">Digite a lista e clique em ordenar.</div>';
+                break;
+            case "somatorio":
+                document.getElementById("som-n").value = "";
+                document.getElementById("out-somatorio").innerHTML =
+                '<div class="output-title">Resultado</div><div class="muted">Informe N e clique em calcular.</div>';
+                break;
+            }
+        });
+        });
+    </script>
+    </body>
+    </html>
